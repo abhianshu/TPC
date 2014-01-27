@@ -33,7 +33,7 @@ int CoinChange(int pCoins[], int pCoinsIndex, int pFinalAmount)
 
 void main()
 {
-	int		  coins[]    = {1,2,5,10,20,50};
+	int		coins[]    = {1,2,5,10,20,50};
 	int     coinscount = sizeof(coins)/sizeof(int);
 	int     numofways;
 	int     input      = 0;
@@ -45,7 +45,7 @@ void main()
 		if(input < 0) break;
 		numofways = CoinChange (coins, coinscount, input);
 		cout<<"Number of Ways " << numofways <<"\n";
-    cout<<"Input -1 to exit \n";
+        cout<<"Input -1 to exit \n";
     }
 
 }
