@@ -16,35 +16,35 @@ using namespace std;
 
 int CoinChange(int pCoins[], int pCoinsIndex, int pFinalAmount)
 {
-	// One way if final amount is 0 
-	if (pFinalAmount == 0) return 1;
+    // One way if final amount is 0 
+    if (pFinalAmount == 0) return 1;
 
-	// No way if final amount is less then zero
-	if (pFinalAmount < 0) return 0;
+    // No way if final amount is less then zero
+    if (pFinalAmount < 0) return 0;
 
-	// Return zero if No denominations left.
-	if (pCoinsIndex <= 0&& pFinalAmount >=1) return 0;
+    // Return zero if No denominations left.
+    if (pCoinsIndex <= 0&& pFinalAmount >=1) return 0;
 
-	// Calculate total number of ways excluding current denomination and including current denomination.
-	return (CoinChange(pCoins, pCoinsIndex - 1, pFinalAmount) + 
-			CoinChange(pCoins, pCoinsIndex, pFinalAmount - pCoins[pCoinsIndex-1]));
+    // Calculate total number of ways excluding current denomination and including current denomination.
+    return (CoinChange(pCoins, pCoinsIndex - 1, pFinalAmount) + 
+            CoinChange(pCoins, pCoinsIndex, pFinalAmount - pCoins[pCoinsIndex-1]));
 }
 
 
 void main()
 {
-	int     coins[]    = {1,2,5,10,20,50};
-	int     coinscount = sizeof(coins)/sizeof(int);
-	int     numofways;
-	int     input      = 0;
+    int     coins[]    = {1,2,5,10,20,50};
+    int     coinscount = sizeof(coins)/sizeof(int);
+    int     numofways;
+    int     input      = 0;
 
-	while (1)
+    while (1)
     {
-		cout <<"Enter amount to find out number of ways for change : ";
-		cin>>input;
-		if(input < 0) break;
-		numofways = CoinChange (coins, coinscount, input);
-		cout<<"Number of Ways " << numofways <<"\n";
+        cout <<"Enter amount to find out number of ways for change : ";
+        cin>>input;
+        if(input < 0) break;
+        numofways = CoinChange (coins, coinscount, input);
+        cout<<"Number of Ways " << numofways <<"\n";
         cout<<"Input -1 to exit \n";
     }
 
