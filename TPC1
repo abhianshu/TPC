@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+//Coin Changing Problem 
+//Calculate the following sequence of fractions:
+//How many ways are there to make change for Rs. 100, if you have notes for Rs. 1, Rs. 2, Rs. 5, Rs. 10, Rs. 20, Rs. 50 and Rs. 100.
+//Some hints and comments.
+//•	One Rs. 100/- note is also considered to be change.
+//•	100 Rs 1 notes is one example of change. So are 5 Rs. 20 notes. List a few before thinking about the problem.
+//•	The number of ways of making change for Rs. 50 is 293. Use this to check whether your approach works or not.
+//•	It is usually helpful to gain intuition about how to solve the problem by doing simpler cases. For example, how many ways are there to make change for Rs. N, where N is 1, 2, 3, 4, ...
+//•	In your solution, you should consider how you can solve related problems. 
+//  For example, if you have to find change for Rs. 100, but the notes available are just for Rs. 1, 2, and 5. 
+//  How would you modify your solution to do this problem? What are the answers you get?
+
+
+int CoinChange(int pCoins[], int pCoinsIndex, int pFinalAmount)
+{
+	// One way if final amount is 0 
+	if (pFinalAmount == 0) return 1;
+
+	// No way if final amount is less then zero
+	if (pFinalAmount < 0) return 0;
+
+	// Return zero if No denominations left.
+	if (pCoinsIndex <= 0&& pFinalAmount >=1) return 0;
+
+	// Calculate total number of ways excluding current denomination and including current denomination.
+	return (CoinChange(pCoins, pCoinsIndex - 1, pFinalAmount) + 
+			CoinChange(pCoins, pCoinsIndex, pFinalAmount - pCoins[pCoinsIndex-1]));
+}
+
+
+void main()
+{
+	int		  coins[]    = {1,2,5,10,20,50};
+	int     coinscount = sizeof(coins)/sizeof(int);
+	int     numofways;
+	int     input      = 0;
+
+	while (1)
+    {
+		cout <<"Enter amount to find out number of ways for change : ";
+		cin>>input;
+		if(input < 0) break;
+		numofways = CoinChange (coins, coinscount, input);
+		cout<<"Number of Ways " << numofways <<"\n";
+    cout<<"Input -1 to exit \n";
+    }
+
+}
