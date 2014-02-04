@@ -1,0 +1,67 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+/**
+ Write a function rotate(arr[], d, n) that rotates arr[] of size n by d elements. 
+ Nature of rotation can be from Left to Right(clockwise) or Right to Left(anti-clockwise). Pick any one or make this as an input to your program.
+*/
+
+void Display(int pArr[], int pSize, int pShift)
+{
+    cout <<"\nShift"<<setw(5)<<pShift<<"--> ";
+    for (int i=0; i< pSize; i++)
+        cout<<" "<<pArr[i]; 
+}
+
+void Rotate (int pArray[], int pArrSize, int pRotateBy)
+{
+    // Get actual integers to be moved.
+    int moveby = pRotateBy % pArrSize;
+
+    // Case: Ratateby is same as Array size, Rotation not required.
+    if(moveby == 0) {
+        Display (pArray, pArrSize, pRotateBy);
+        return;
+    }
+
+    // Case: Reverse rotation.
+    if(moveby < 0){
+        // Convert reverse rotation in normal rotation.
+        moveby = pArrSize + moveby;
+    }
+
+    // Case: Create a temporary buffer to hold elements from the last.
+    int * temp = (int *) malloc (moveby * sizeof(int));
+
+    // Copy elements from last in temporary array
+    memmove(temp, pArray + (pArrSize - moveby), moveby * sizeof(int));
+    
+    // Now shift elements from start to move by position
+    memmove(pArray + moveby, pArray, (pArrSize - moveby) * sizeof(int));
+
+    // Copy elements from temp buffer to start.
+    memmove(pArray, temp, moveby * sizeof(int));
+
+    // Display the rotated array.
+    Display (pArray, pArrSize, pRotateBy);
+}
+
+void main()
+{
+    int arr[] = {10, 20, 30, 40, 50};
+
+    Rotate (arr, sizeof (arr)/sizeof(int), 0);
+    
+    // Left to right rotations
+    Rotate (arr, sizeof (arr)/sizeof(int), 2);
+    Rotate (arr, sizeof (arr)/sizeof(int), 5);
+    Rotate (arr, sizeof (arr)/sizeof(int), 15);
+    Rotate (arr, sizeof (arr)/sizeof(int), 12);
+
+    // Right to left rotations
+    Rotate (arr, sizeof (arr)/sizeof(int), -2);
+    Rotate (arr, sizeof (arr)/sizeof(int), -5);
+    Rotate (arr, sizeof (arr)/sizeof(int), -15);
+    Rotate (arr, sizeof (arr)/sizeof(int), -12);
+}
