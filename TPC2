@@ -43,6 +43,9 @@ void Rotate (int pArray[], int pArrSize, int pRotateBy)
     // Copy elements from temp buffer to start.
     memmove(pArray, temp, moveby * sizeof(int));
 
+    // Release temp memory
+    free(temp);
+    
     // Display the rotated array.
     Display (pArray, pArrSize, pRotateBy);
 }
