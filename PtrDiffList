@@ -1,0 +1,145 @@
+// Doubly link list have two pointers one to move to next node, another to move to previous node. 
+// Write a program for a doubly link list using one pointer. 
+// Implement Insert, Walk, WalkBack functions for the list. Node data is of type integer.
+
+#include <iostream>
+using namespace std;
+
+struct tListNode{
+	tListNode(int pData)
+	{
+		uData	   = pData;
+		uPtrDiff   = NULL;
+	}
+
+	int			uData;
+	tListNode * uPtrDiff;
+};
+
+typedef bool (*WalkFunc)(tListNode * pNode, void * pData);
+
+class List{
+public:
+	 List ();	
+	~List ();	
+
+	void Insert		(int pData);
+	bool Walk		(WalkFunc pFunc, void * pData);
+	bool WalkBack	(WalkFunc pFunc, void * pData);
+
+private:
+	tListNode * vHead;
+	tListNode * vLast;
+};
+
+List::List ()	
+{
+	vHead = NULL;
+	vLast = NULL;
+};
+
+void List::Insert(int pData)
+{
+	tListNode * prev = NULL;	
+	tListNode * next = NULL;	
+	
+	// Allocate list element.
+	tListNode * newnode = new tListNode(pData);
+
+	// First element
+	if(!vHead){
+		newnode->uPtrDiff = NULL ^ NULL;
+		vHead = newnode;
+		vLast = newnode;
+		return;
+	}
+
+	// Intermediate node	
+	for (tListNode * temp = vHead; temp; temp = next)
+	{
+		// Last node
+		if(((int)temp->uPtrDiff ^ (int)prev) == NULL)
+		{
+			// Insert the new node
+			(temp->uPtrDiff)	= (tListNode*)((int)prev ^ (int)newnode);
+			(newnode->uPtrDiff) = (tListNode*)((int)temp ^ NULL);
+			vLast = newnode;
+			return;
+		}
+		next = (tListNode*)((int)prev ^ (int)temp->uPtrDiff);
+		prev = temp;
+	}
+}
+
+
+bool List::Walk (WalkFunc pFunc, void * pData)
+{
+	tListNode * prev = NULL;	
+	tListNode * next = NULL;	
+
+	for(tListNode * temp = vHead; temp; temp = next){
+
+		if(pFunc(temp, pData) == false)
+			return false;
+		
+		// Move to next node.
+		next = (tListNode*)((int)prev ^ (int)temp->uPtrDiff);
+		prev = temp;
+	}
+	return true;
+}
+
+bool List::WalkBack (WalkFunc pFunc, void * pData)
+{
+	tListNode * prev = NULL;	
+	tListNode * next = NULL;	
+
+	for(tListNode * temp = vLast; temp; temp = prev){
+
+		if(pFunc(temp, pData) == false)
+			return false;
+
+		// Move to Previous node.		
+		prev = (tListNode*)((int)next ^ (int)temp->uPtrDiff);
+		next = temp;
+	}
+	return true;
+}
+
+List::~List ()	
+{
+	tListNode * prev = NULL;	
+	tListNode * next = NULL;	
+	tListNode * temp = vHead;
+
+	while(temp){
+
+		// Move to next node.
+		next = (tListNode*)((int)prev ^ (int)temp->uPtrDiff);
+		prev = temp;
+		temp = next;
+
+		// Delete the previous node.
+		delete prev;
+	}
+}
+
+bool Display(tListNode * pNode, void * pData)
+{
+	cout << "\n Data: "<< pNode->uData;
+	return true;
+}
+
+int main()
+{
+	List * list = new List();
+
+	for(int i=1; i<10; i++){
+		list->Insert (i*10);
+	}
+	cout<<"Walk :";
+	list->Walk (Display, NULL);
+	cout<<"\nWalk Back:";
+	list->WalkBack (Display, NULL);
+	delete list;
+}
